@@ -1,4 +1,3 @@
-<!-- profile.php -->
 <?php
 session_start();
 
@@ -7,23 +6,19 @@ $username = "newuser";
 $dbpassword = "admin123";
 $dbname = "login-form";
 
-// Create connection
 $conn = new mysqli($servername, $username, $dbpassword, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 $email = $_SESSION['email'];
 
-// Check if the email exists in the userprofile table
 $sql_check = "SELECT COUNT(*) AS count FROM userprofile WHERE email='$email'";
 $result_check = $conn->query($sql_check);
 $row_check = $result_check->fetch_assoc();
 
 if ($row_check['count'] > 0) {
-    // Fetch user profile data
     $sql_profile = "SELECT * FROM userprofile WHERE email='$email'";
     $result_profile = $conn->query($sql_profile);
     $row_profile = $result_profile->fetch_assoc();
@@ -34,10 +29,8 @@ if ($row_check['count'] > 0) {
     $gender = $row_profile['gender'];
     $address = $row_profile['address'];
 } else {
-    // Insert new row into userprofile table
     $sql_insert = "INSERT INTO userprofile (email) VALUES ('$email')";
     if ($conn->query($sql_insert) === TRUE) {
-        // Set default values for profile fields
         $firstName = '';
         $lastName = '';
         $age = '';
