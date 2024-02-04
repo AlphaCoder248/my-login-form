@@ -1,4 +1,3 @@
-<!-- login.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +27,6 @@
         $(document).ready(function(){
             $('#loginForm').submit(function(e){
                 e.preventDefault();
-                // Validate form fields
                 var email = $('#email').val().trim();
                 var password = $('#password').val().trim();
                 
@@ -37,7 +35,6 @@
                     return;
                 }
 
-                // Submit form via AJAX if validation passes
                 $.ajax({
                     type: 'POST',
                     url: 'login.php',
