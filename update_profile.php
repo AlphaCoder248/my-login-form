@@ -1,4 +1,3 @@
-<!-- update_profile.php -->
 <?php
 session_start();
 
@@ -7,10 +6,8 @@ $username = "newuser";
 $dbpassword = "admin123";
 $dbname = "login-form";
 
-// Create connection
 $conn = new mysqli($servername, $username, $dbpassword, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
