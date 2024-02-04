@@ -55,12 +55,12 @@
                     url: 'login.php',
                     data: $(this).serialize(),
                     success: function(response){
-                        alert(response);
-                        window.location.href = "profile.php";
-                    },
-                    error: function(xhr, status, error){
-                        console.error(xhr.responseText);
-                    }
+                if (response === "Login successful") {
+                    window.location.href = "profile.php";
+                } else {
+                    alert("Invalid email or password");
+                }
+                },
                 });
             });
         });
