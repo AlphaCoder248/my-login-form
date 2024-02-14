@@ -27,7 +27,7 @@ if ($row_check['count'] > 0) {
     $lastName = $row_profile['lastName'];
     $age = $row_profile['age'];
     $gender = $row_profile['gender'];
-    $address = $row_profile['address'];
+    $phone = $row_profile['phone'];
 } else {
     $sql_insert = "INSERT INTO userprofile (email) VALUES ('$email')";
     if ($conn->query($sql_insert) === TRUE) {
@@ -35,7 +35,7 @@ if ($row_check['count'] > 0) {
         $lastName = '';
         $age = '';
         $gender = 'select';
-        $address = '';
+        $phone = '';
     } else {
         echo "Error: " . $sql_insert . "<br>" . $conn->error;
         exit;
@@ -52,41 +52,96 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: steelblue;
+        }
+        .container {
+            background-color: #a6e6f7;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        h2 {
+            color: #333333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #555555;
+        }
+        .btn {
+            margin-top: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            width: 100%;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>Profile</h2>
         <form id="profileForm">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" readonly>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $firstName; ?>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $firstName; ?>">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $lastName; ?>">
+                </div>
+                <div class="col-md-6">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="text" class="form-control" id="age" name="age" value="<?php echo $age; ?>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $lastName; ?>">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select class="form-select" id="gender" name="gender">
+                        <option value="select" <?php if($gender == "select") echo "selected"; ?>>Select</option>
+                        <option value="male" <?php if($gender == "male") echo "selected"; ?>>Male</option>
+                        <option value="female" <?php if($gender == "female") echo "selected"; ?>>Female</option>
+                        <option value="other" <?php if($gender == "other") echo "selected"; ?>>Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $phone; ?>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="age" class="form-label">Age</label>
-                <input type="text" class="form-control" id="age" name="age" value="<?php echo $age; ?>">
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary">Save Details</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="logoutButton" class="btn btn-danger">Logout</button>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="gender" class="form-label">Gender</label>
-                <select class="form-select" id="gender" name="gender">
-                    <option value="select" <?php if($gender == "select") echo "selected"; ?>>Select</option>
-                    <option value="male" <?php if($gender == "male") echo "selected"; ?>>Male</option>
-                    <option value="female" <?php if($gender == "female") echo "selected"; ?>>Female</option>
-                    <option value="other" <?php if($gender == "other") echo "selected"; ?>>Other</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" name="address"><?php echo $address; ?></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Save details</button>
         </form>
     </div>
 
@@ -107,7 +162,20 @@ $conn->close();
                     }
                 });
             });
+            $('#logoutButton').click(function(){
+                $.ajax({
+                    type: 'POST',
+                    url: 'logout.php',
+                    success: function(response){
+                        window.location.href = "login.html";
+                    },
+                    error: function(xhr, status, error){
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
         });
     </script>
 </body>
 </html>
+

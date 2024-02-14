@@ -17,11 +17,11 @@ $firstName = $_POST['firstName'];
 $lastName = $_POST['lastName'];
 $age = $_POST['age'];
 $gender = $_POST['gender'];
-$address = $_POST['address'];
+$phone = $_POST['phone'];
 
-$sql = "INSERT INTO userprofile (email, firstName, lastName, age, gender, address) 
-        VALUES ('$email', '$firstName', '$lastName', '$age', '$gender', '$address')
-        ON DUPLICATE KEY UPDATE firstName='$firstName', lastName='$lastName', age='$age', gender='$gender', address='$address'";
+$sql = "INSERT INTO userprofile (email, firstName, lastName, age, gender, phone) 
+        VALUES ('$email', '$firstName', '$lastName', '$age', '$gender', '$phone')
+        ON DUPLICATE KEY UPDATE firstName='$firstName', lastName='$lastName', age='$age', gender='$gender', phone='$phone'";
 
 if ($conn->query($sql) === TRUE) {
     echo "Profile updated successfully";

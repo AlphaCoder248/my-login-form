@@ -17,9 +17,9 @@ $firstName = $_POST['firstName'];
 $lastName = $_POST['lastName'];
 $age = $_POST['age'];
 $gender = $_POST['gender'];
-$address = $_POST['address'];
+$phone = $_POST['phone'];
 
-$sql = "UPDATE userprofile SET firstName='$firstName', lastName='$lastName', age='$age', gender='$gender', address='$address' WHERE email='$email'";
+$sql = "UPDATE userprofile SET firstName='$firstName', lastName='$lastName', age='$age', gender='$gender', phone='$phone' WHERE email='$email'";
 
 if ($conn->query($sql) === TRUE) {
     echo "Profile updated successfully";

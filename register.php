@@ -20,6 +20,14 @@ if ($password != $confirmPassword) {
     exit;
 }
 
+$sql_check_email = "SELECT * FROM users WHERE email='$email'";
+$result_check_email = $conn->query($sql_check_email);
+
+if ($result_check_email->num_rows > 0) {
+    echo "Email already exists";
+    exit;
+}
+
 
 $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
 
